@@ -68,30 +68,4 @@ public class ComparisonRunner {
         );
 
     }
-
-    // Run multiple algorithms on same input array
-    public static List<RunStats> runAll(List<SortAlgorithm> algorithms,
-                                        int[] inputArray,
-                                        String arraySource,
-                                        int numberOfRuns) throws ExecutionException, InterruptedException {
-        List<RunStats> allStats = new ArrayList<>();
-        for (SortAlgorithm algo : algorithms) {
-            allStats.add(run(algo, inputArray, arraySource, numberOfRuns));
-        }
-        return allStats;
-    }
-
-    // run one algorithm on multiple input arrays
-    public static List<RunStats> runOnMultipleInputs(SortAlgorithm algorithm,
-                                                     int[][] inputArrays,
-                                                     String[] sources,
-                                                     int numberOfRuns) throws ExecutionException, InterruptedException {
-        List<RunStats> allStats = new ArrayList<>();
-        for (int i = 0; i < inputArrays.length; i++) {
-            allStats.add(run(algorithm, inputArrays[i], sources[i], numberOfRuns));
-        }
-        return allStats;
-    }
-
-
 }

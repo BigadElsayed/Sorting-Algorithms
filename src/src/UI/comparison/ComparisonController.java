@@ -147,12 +147,12 @@ public class ComparisonController implements Initializable {
     private List<String> loadedFilePaths = new ArrayList<>();
 
 
-    // BOKRA
     public void handleAddFile() {
+        // filechosser is the OS "save file" dialog window
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select Input File");
 
         fileChooser.getExtensionFilters().add(
+                // To prevent it from use any extension instead .txt
                 new FileChooser.ExtensionFilter("Text Files", "*.txt")
         );
 
@@ -190,15 +190,20 @@ public class ComparisonController implements Initializable {
 
         if (bubbleCheck.isSelected()) {
             selectedAlgorithms.add(new BubbleSort());
-        } if (selectionCheck.isSelected()) {
+        }
+        if (selectionCheck.isSelected()) {
             selectedAlgorithms.add(new SelectionSort());
-        } if (insertionCheck.isSelected()) {
+        }
+        if (insertionCheck.isSelected()) {
             selectedAlgorithms.add(new InsertionSort());
-        } if (mergeCheck.isSelected()) {
+        }
+        if (mergeCheck.isSelected()) {
             selectedAlgorithms.add((new MergeSort()));
-        } if (quickCheck.isSelected()) {
+        }
+        if (quickCheck.isSelected()) {
             selectedAlgorithms.add(new QuickSort());
-        } if (heapCheck.isSelected()) {
+        }
+        if (heapCheck.isSelected()) {
             selectedAlgorithms.add(new HeapSort());
         }
 
@@ -215,16 +220,18 @@ public class ComparisonController implements Initializable {
         Task<List<RunStats>> task = new Task<>() {
             @Override
             protected List<RunStats> call() throws Exception {
-
                 List<RunStats> runStats = new ArrayList<>();
-                int[] array = ArrayGenerator.generateArray(arrType, size);
 
-                for (SortAlgorithm algorithm : selectedAlgorithms) {
-                    RunStats stats = ComparisonRunner.run(algorithm, array, arrType, runs);
-                    runStats.add(stats);
+                if (loadedFilePaths.isEmpty()) {
+                    int[] array = ArrayGenerator.generateArray(arrType, size);
+
+                    for (SortAlgorithm algorithm : selectedAlgorithms) {
+                        RunStats stats = ComparisonRunner.run(algorithm, array, arrType, runs);
+                        runStats.add(stats);
+                    }
                 }
 
-                // BOKRA
+
                 for (String filePath : loadedFilePaths) {
                     int[] fileArray = FileLoader.loadFromFile(filePath);
                     String fileName = FileLoader.getFileName(filePath);
@@ -257,16 +264,17 @@ public class ComparisonController implements Initializable {
         resultsTable.getItems().clear();
     }
 
-    // BOKRA
+
     public void handleExport() throws FileNotFoundException {
         if (resultsTable.getItems().isEmpty()) {
             System.err.println("No Results Selected");
             return;
         }
+
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save Results as CSV");
         fileChooser.setInitialFileName("comparison_results.csv");
         fileChooser.getExtensionFilters().add(
+                // to prevent it from using any extension instead .csv
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv")
         );
 
@@ -281,22 +289,13 @@ public class ComparisonController implements Initializable {
                         "Comparisons,Interchanges");
                 for (RunStats r : resultsTable.getItems()) {
                     out.println(
-                            r.getAlgorithmName() + "," +
-                                    r.getArraySize() + "," +
-                                    r.getArraySource() + "," +
-                                    r.getNumberOfRuns() + "," +
-                                    r.getAvgRunTimeFormatted() + "," +
-                                    r.getMinRunTimeFormatted() + "," +
-                                    r.getMaxRunTimeFormatted() + "," +
-                                    r.getComparisons() + "," +
-                                    r.getInterchanges()
+                            r.getAlgorithmName() + "," + r.getArraySize() + "," + r.getArraySource() + "," + r.getNumberOfRuns() + "," + r.getAvgRunTimeFormatted() + "," + r.getMinRunTimeFormatted() + "," + r.getMaxRunTimeFormatted() + "," + r.getComparisons() + "," + r.getInterchanges()
                     );
                 }
             } catch (IOException e) {
-                System.err.println("Error Saving Results as CSV");
+                System.err.println("Error Saving Results as csv file");
             }
 
         }
-
     }
 }

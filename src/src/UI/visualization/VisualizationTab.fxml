@@ -12,7 +12,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="700.0" prefWidth="1180.0" style="-fx-background-color: #1a0a0a;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.visualization.VisualizationController">
+<BorderPane prefHeight="700.0" prefWidth="1180.0" style="-fx-background-color: #1a0a0a;"
+            xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="UI.visualization.VisualizationController">
 
 
     <top>
@@ -20,82 +22,131 @@
 
             <!-- ROW 1 — Algorithm, Array Type, Size -->
             <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 5px 10px;">
+                <Separator orientation="VERTICAL"
+                           style="-fx-background-color: #5c1a1a;"/>
 
-                <Label style="-fx-text-fill: #d5a5a5; -fx-font-size: 13px;" text="Algorithm:" />
-                <ComboBox fx:id="algorithmCombo" prefWidth="160" style="-fx-background-color: #3d1515;                                  -fx-text-fill: white;                                  -fx-font-size: 13px;                                  -fx-border-color: #8b0000;                                  -fx-border-radius: 3;" />
+                <Button fx:id="loadFileButton"
+                        text="📂 Load File"
+                        onAction="#handleLoadFile"
+                        style="-fx-background-color: #6b1a1a;
+               -fx-text-fill: white;
+               -fx-font-size: 13px;
+               -fx-cursor: hand;
+               -fx-border-color: #8b0000;
+               -fx-border-radius: 3;
+               -fx-background-radius: 3;"/>
 
-                <Separator orientation="VERTICAL" style="-fx-background-color: #5c1a1a;" />
+                <Label fx:id="fileNameLabel"
+                       text="No file loaded"
+                       style="-fx-text-fill: #a06060;
+              -fx-font-size: 11px;
+              -fx-font-style: italic;"/>
 
-                <Label style="-fx-text-fill: #d5a5a5; -fx-font-size: 13px;" text="Array Type:" />
-                <ComboBox fx:id="arrayTypeCombo" prefWidth="160" style="-fx-background-color: #3d1515;                                  -fx-text-fill: white;                                  -fx-font-size: 13px;                                  -fx-border-color: #8b0000;                                  -fx-border-radius: 3;" />
+                <Label style="-fx-text-fill: #d5a5a5; -fx-font-size: 13px;" text="Algorithm:"/>
+                <ComboBox fx:id="algorithmCombo" prefWidth="160"
+                          style="-fx-background-color: #3d1515;                                  -fx-text-fill: white;                                  -fx-font-size: 13px;                                  -fx-border-color: #8b0000;                                  -fx-border-radius: 3;"/>
 
-                <Separator orientation="VERTICAL" style="-fx-background-color: #5c1a1a;" />
+                <Separator orientation="VERTICAL" style="-fx-background-color: #5c1a1a;"/>
 
-                <Label style="-fx-text-fill: #d5a5a5; -fx-font-size: 13px;" text="Size (max 100):" />
-                <TextField fx:id="arraySizeField" prefWidth="70" style="-fx-background-color: #3d1515;                                   -fx-text-fill: white;                                   -fx-prompt-text-fill: #a06060;                                   -fx-font-size: 13px;                                   -fx-border-color: #8b0000;                                   -fx-border-radius: 3;" />
+                <Label style="-fx-text-fill: #d5a5a5; -fx-font-size: 13px;" text="Array Type:"/>
+                <ComboBox fx:id="arrayTypeCombo" prefWidth="160"
+                          style="-fx-background-color: #3d1515;                                  -fx-text-fill: white;                                  -fx-font-size: 13px;                                  -fx-border-color: #8b0000;                                  -fx-border-radius: 3;"/>
+
+                <Separator orientation="VERTICAL" style="-fx-background-color: #5c1a1a;"/>
+
+                <Label style="-fx-text-fill: #d5a5a5; -fx-font-size: 13px;" text="Size (max 100):"/>
+                <TextField fx:id="arraySizeField" prefWidth="70"
+                           style="-fx-background-color: #3d1515;                                   -fx-text-fill: white;                                   -fx-prompt-text-fill: #a06060;                                   -fx-font-size: 13px;                                   -fx-border-color: #8b0000;                                   -fx-border-radius: 3;"/>
 
             </HBox>
 
             <!-- ROW 2 — Speed Slider + Buttons + Status -->
             <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 5px 10px;">
 
-                <Label style="-fx-text-fill: #d5a5a5; -fx-font-size: 13px;" text="Speed:" />
+                <Label style="-fx-text-fill: #d5a5a5; -fx-font-size: 13px;" text="Speed:"/>
 
-                <Label style="-fx-text-fill: #a06060; -fx-font-size: 11px;" text="Fast" />
-                <Slider fx:id="speedSlider" prefWidth="200" showTickLabels="false" showTickMarks="true" style="-fx-control-inner-background: #8b0000;" />
-                <Label style="-fx-text-fill: #a06060; -fx-font-size: 11px;" text="Slow" />
+                <Label style="-fx-text-fill: #a06060; -fx-font-size: 11px;" text="Fast"/>
+                <Slider fx:id="speedSlider" prefWidth="200" showTickLabels="false" showTickMarks="true"
+                        style="-fx-control-inner-background: #8b0000;"/>
+                <Label style="-fx-text-fill: #a06060; -fx-font-size: 11px;" text="Slow"/>
 
-                <Separator orientation="VERTICAL" style="-fx-background-color: #5c1a1a;" />
+                <Separator orientation="VERTICAL" style="-fx-background-color: #5c1a1a;"/>
 
                 <!-- Start -->
-                <Button fx:id="startButton" onAction="#handleStart" prefWidth="90" style="-fx-background-color: #8b0000;                                -fx-text-fill: white;                                -fx-font-size: 13px;                                -fx-font-weight: bold;                                -fx-cursor: hand;                                -fx-background-radius: 4;" text="▶ Start" />
+                <Button fx:id="startButton" onAction="#handleStart" prefWidth="90"
+                        style="-fx-background-color: #8b0000;                                -fx-text-fill: white;                                -fx-font-size: 13px;                                -fx-font-weight: bold;                                -fx-cursor: hand;                                -fx-background-radius: 4;"
+                        text="▶ Start"/>
 
                 <!-- Pause/Resume -->
-                <Button fx:id="pauseResumeButton" onAction="#handlePauseResume" prefWidth="100" style="-fx-background-color: #6b1a1a;                                -fx-text-fill: white;                                -fx-font-size: 13px;                                -fx-font-weight: bold;                                -fx-cursor: hand;                                -fx-border-color: #8b0000;                                -fx-border-radius: 4;                                -fx-background-radius: 4;" text="⏸ Pause" />
+                <Button fx:id="pauseResumeButton" onAction="#handlePauseResume" prefWidth="100"
+                        style="-fx-background-color: #6b1a1a;                                -fx-text-fill: white;                                -fx-font-size: 13px;                                -fx-font-weight: bold;                                -fx-cursor: hand;                                -fx-border-color: #8b0000;                                -fx-border-radius: 4;                                -fx-background-radius: 4;"
+                        text="⏸ Pause"/>
 
                 <!-- Step -->
-                <Button fx:id="stepButton" onAction="#handleStep" prefWidth="90" style="-fx-background-color: #6b1a1a;                                -fx-text-fill: white;                                -fx-font-size: 13px;                                -fx-font-weight: bold;                                -fx-cursor: hand;                                -fx-border-color: #8b0000;                                -fx-border-radius: 4;                                -fx-background-radius: 4;" text="⏭ Step" />
+                <Button fx:id="stepButton" onAction="#handleStep" prefWidth="90"
+                        style="-fx-background-color: #6b1a1a;                                -fx-text-fill: white;                                -fx-font-size: 13px;                                -fx-font-weight: bold;                                -fx-cursor: hand;                                -fx-border-color: #8b0000;                                -fx-border-radius: 4;                                -fx-background-radius: 4;"
+                        text="⏭ Step"/>
 
                 <!-- Reset -->
-                <Button fx:id="resetButton" onAction="#handleReset" prefWidth="90" style="-fx-background-color: #4a0a0a;                                -fx-text-fill: #d5a5a5;                                -fx-font-size: 13px;                                -fx-font-weight: bold;                                -fx-cursor: hand;                                -fx-border-color: #8b0000;                                -fx-border-radius: 4;                                -fx-background-radius: 4;" text="↺ Reset" />
+                <Button fx:id="resetButton" onAction="#handleReset" prefWidth="90"
+                        style="-fx-background-color: #4a0a0a;                                -fx-text-fill: #d5a5a5;                                -fx-font-size: 13px;                                -fx-font-weight: bold;                                -fx-cursor: hand;                                -fx-border-color: #8b0000;                                -fx-border-radius: 4;                                -fx-background-radius: 4;"
+                        text="↺ Reset"/>
+
+                <Button fx:id="clearFileButton"
+                        text="✕"
+                        onAction="#handleClearFile"
+                        style="-fx-background-color: #4a0a0a;
+                        -fx-text-fill: #d5a5a5;
+                        -fx-font-size: 11px;
+                        -fx-cursor: hand;
+                        -fx-border-color: #8b0000;
+                        -fx-border-radius: 3;
+                        -fx-background-radius: 3;"/>
 
                 <!-- Status -->
-                <Label fx:id="statusLabel" style="-fx-text-fill: #e74c3c;                               -fx-font-size: 13px;                               -fx-font-style: italic;" />
+                <Label fx:id="statusLabel"
+                       style="-fx-text-fill: #e74c3c;                               -fx-font-size: 13px;                               -fx-font-style: italic;"/>
 
             </HBox>
         </VBox>
     </top>
-    
+
     <center>
         <AnchorPane style="-fx-background-color: #0d0505;">
 
-            <Canvas fx:id="sortCanvas" height="580" width="1180" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
+            <Canvas fx:id="sortCanvas" height="580" width="1180" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
+                    AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0"/>
 
         </AnchorPane>
     </center>
 
     <bottom>
-        <HBox alignment="CENTER" spacing="40" style="-fx-background-color: #2d0f0f;                      -fx-padding: 10px;                      -fx-border-color: #5c1a1a;                      -fx-border-width: 2 0 0 0;">
+        <HBox alignment="CENTER" spacing="40"
+              style="-fx-background-color: #2d0f0f;                      -fx-padding: 10px;                      -fx-border-color: #5c1a1a;                      -fx-border-width: 2 0 0 0;">
 
             <!-- Comparisons -->
             <HBox alignment="CENTER" spacing="8">
-                <Label style="-fx-text-fill: #d5a5a5; -fx-font-size: 13px;" text="Comparisons:" />
-                <Label fx:id="comparisonsLabel" style="-fx-text-fill: #e74c3c;                               -fx-font-size: 14px;                               -fx-font-weight: bold;" text="0" />
+                <Label style="-fx-text-fill: #d5a5a5; -fx-font-size: 13px;" text="Comparisons:"/>
+                <Label fx:id="comparisonsLabel"
+                       style="-fx-text-fill: #e74c3c;                               -fx-font-size: 14px;                               -fx-font-weight: bold;"
+                       text="0"/>
             </HBox>
 
-            <Separator orientation="VERTICAL" style="-fx-background-color: #5c1a1a;" />
+            <Separator orientation="VERTICAL" style="-fx-background-color: #5c1a1a;"/>
 
             <!-- Interchanges -->
             <HBox alignment="CENTER" spacing="8">
-                <Label style="-fx-text-fill: #d5a5a5; -fx-font-size: 13px;" text="Interchanges:" />
-                <Label fx:id="interchangesLabel" style="-fx-text-fill: #e74c3c;                               -fx-font-size: 14px;                               -fx-font-weight: bold;" text="0" />
+                <Label style="-fx-text-fill: #d5a5a5; -fx-font-size: 13px;" text="Interchanges:"/>
+                <Label fx:id="interchangesLabel"
+                       style="-fx-text-fill: #e74c3c;                               -fx-font-size: 14px;                               -fx-font-weight: bold;"
+                       text="0"/>
             </HBox>
 
             <!-- Color Legend -->
             <HBox alignment="CENTER" spacing="15">
-                <Label style="-fx-text-fill: #e74c3c;                               -fx-font-size: 12px;                               -fx-font-weight: bold;" />
-                <Label style="-fx-text-fill: #ff8c69;                               -fx-font-size: 12px;                               -fx-font-weight: bold;" />
-                <Label style="-fx-text-fill: #c0392b;                               -fx-font-size: 12px;                               -fx-font-weight: bold;" />
+                <Label style="-fx-text-fill: #e74c3c;                               -fx-font-size: 12px;                               -fx-font-weight: bold;"/>
+                <Label style="-fx-text-fill: #ff8c69;                               -fx-font-size: 12px;                               -fx-font-weight: bold;"/>
+                <Label style="-fx-text-fill: #c0392b;                               -fx-font-size: 12px;                               -fx-font-weight: bold;"/>
             </HBox>
 
         </HBox>

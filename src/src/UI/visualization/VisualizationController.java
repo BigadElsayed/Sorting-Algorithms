@@ -2,6 +2,7 @@ package UI.visualization;
 
 import algorithms.*;
 import core.ArrayGenerator;
+import core.FileLoader;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -10,8 +11,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +25,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class VisualizationController implements Initializable {
+    @FXML
+    private Button loadFileButton;
+    @FXML
+    private Label fileNameLabel;
     @FXML
     private ComboBox<String> algorithmCombo;
     @FXML
@@ -45,6 +53,9 @@ public class VisualizationController implements Initializable {
     private Label comparisonsLabel;
     @FXML
     private Label interchangesLabel;
+    @FXML
+    private Button clearFileButton;
+
 
     private Timeline timeline;
     private List<int[]> snapShots;
@@ -66,10 +77,47 @@ public class VisualizationController implements Initializable {
         resetButton.setDisable(true);
         stepButton.setDisable(true);
         pauseResumeButton.setDisable(true);
+
         statusLabel.setText("Press Start To Begin");
         arraySizeField.setText("50");
     }
 
+    private int[] loadedFileArray = null;
+
+    @FXML
+    private void handleLoadFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Input File");
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Text Files", "*.txt")
+        );
+
+        File file = fileChooser.showOpenDialog(
+                loadFileButton.getScene().getWindow()
+        );
+
+        if (file != null) {
+            try {
+                int[] array = FileLoader.loadFromFile(file.getAbsolutePath());
+                if (array.length > 100) {
+                    System.err.println("File has " + array.length + " elements. Max is 100 for visualization.");
+                    return;
+                }
+
+                loadedFileArray = array;
+                fileNameLabel.setText(file.getName());
+                fileNameLabel.setStyle("-fx-text-fill: #e74c3c; -fx-font-size: 11px;");
+
+                arrayTypeCombo.setDisable(true);
+                arraySizeField.setDisable(true);
+
+                statusLabel.setText("File loaded: " + file.getName());
+
+            } catch (IOException e) {
+                System.err.println("Could not read file: " + e.getMessage());
+            }
+        }
+    }
 
     @FXML
     public void handleStart() {
@@ -78,21 +126,40 @@ public class VisualizationController implements Initializable {
             timeline.stop();
         }
 
-        int size;
-
-        try {
-            size = Integer.parseInt(arraySizeField.getText());
-            if (size <= 0 || size > 100) {
-                throw new NumberFormatException();
+        int[] arr;
+        if (loadedFileArray != null) {
+            arr = loadedFileArray.clone();
+        } else {
+            int size;
+            try {
+                size = Integer.parseInt(arraySizeField.getText());
+                if (size <= 0 || size > 100) {
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException e) {
+                System.err.println("Size must be between 1 and 100");
+                return;
             }
-        } catch (NumberFormatException e) {
-            System.err.println("Size must be between 1 and 100");
-            return;
+            arr = ArrayGenerator.generateArray(arrayTypeCombo.getValue(), size);
         }
 
-        int[] arr = ArrayGenerator.generateArray(arrayTypeCombo.getValue(), size);
-        SortAlgorithm algorithm = getSelectedAlgorithm();
+        // Handle Negative No.s
+        int min = Integer.MAX_VALUE;
 
+        for (int j : arr) {
+            if (j < min) {
+                min = j;
+            }
+        }
+
+        if (min < 0) {
+            for (int i = 0; i < arr.length; i++) {
+                arr[i] += Math.abs(min) ;
+            }
+        }
+
+
+        SortAlgorithm algorithm = getSelectedAlgorithm();
         SortResult result = algorithm.sortWithSteps(arr);
 
         comparisonsLabel.setText("Comparisons: " + result.getComparisons());
@@ -137,11 +204,10 @@ public class VisualizationController implements Initializable {
         }
     }
 
-    // BOKRA
     private void drawBars(int[] array, int[] highlight) {
         GraphicsContext gc = sortCanvas.getGraphicsContext2D();
 
-        double canvasWidth  = sortCanvas.getWidth();
+        double canvasWidth = sortCanvas.getWidth();
         double canvasHeight = sortCanvas.getHeight();
 
         //clear Old bars
@@ -150,6 +216,8 @@ public class VisualizationController implements Initializable {
         double barWidth = canvasWidth / array.length;
 
         int max = 0;
+
+
         for (int val : array) {
             if (val > max) max = val;
         }
@@ -203,15 +271,16 @@ public class VisualizationController implements Initializable {
 
     @FXML
     public void handleStep() {
-        if(timeline == null || snapShots == null) {}
-        if(timeline.getStatus() == Animation.Status.RUNNING) {
+        if (timeline == null || snapShots == null) {
+        }
+        if (timeline.getStatus() == Animation.Status.RUNNING) {
             timeline.pause();
         }
-        if(currentFrameCounter < snapShots.size()) {
+        if (currentFrameCounter < snapShots.size()) {
             drawBars(snapShots.get(currentFrameCounter), highlightedIndices.get(currentFrameCounter));
             currentFrameCounter++;
             statusLabel.setText("Step: " + currentFrameCounter + " / " + snapShots.size());
-            if(currentFrameCounter >= snapShots.size()) {
+            if (currentFrameCounter >= snapShots.size()) {
                 timeline.stop();
                 statusLabel.setText("Done");
                 startButton.setDisable(false);
@@ -245,12 +314,21 @@ public class VisualizationController implements Initializable {
             timeline.pause();
             statusLabel.setText("Paused");
             pauseResumeButton.setText("Resume");
-        }
-        else if (timeline.getStatus() == Animation.Status.PAUSED) {
+        } else if (timeline.getStatus() == Animation.Status.PAUSED) {
             timeline.play();
             statusLabel.setText("Running ...");
             pauseResumeButton.setText("Pause");
         }
+    }
+
+    @FXML
+    private void handleClearFile() {
+        loadedFileArray = null;
+        fileNameLabel.setText("No file loaded");
+        fileNameLabel.setStyle("-fx-text-fill: #a06060; -fx-font-size: 11px;");
+        arrayTypeCombo.setDisable(false);
+        arraySizeField.setDisable(false);
+        statusLabel.setText("File cleared");
     }
 
 }
