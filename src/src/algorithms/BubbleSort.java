@@ -24,4 +24,7 @@ public class BubbleSort extends SortAlgorithm {
     public String getAlgorithmName() {
         return "Bubble Sort";
     }
+
+    @Override
+    public SortAlgorithm newInstance() { return new BubbleSort(); }
 }

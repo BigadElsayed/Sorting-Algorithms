@@ -21,4 +21,7 @@ public class SelectionSort extends SortAlgorithm {
     public String getAlgorithmName() {
         return "Selection Sort";
     }
+
+    @Override
+    public SortAlgorithm newInstance() { return new SelectionSort(); }
 }

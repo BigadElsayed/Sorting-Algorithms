@@ -39,4 +39,7 @@ public class HeapSort extends SortAlgorithm {
     public String getAlgorithmName() {
         return "Heap Sort";
     }
+
+    @Override
+    public SortAlgorithm newInstance() { return new HeapSort(); }
 }

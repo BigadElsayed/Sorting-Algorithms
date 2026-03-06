@@ -60,4 +60,7 @@ public class MergeSort extends SortAlgorithm {
     public String getAlgorithmName() {
         return "Merge Sort";
     }
+
+    @Override
+    public SortAlgorithm newInstance() { return new MergeSort(); }
 }

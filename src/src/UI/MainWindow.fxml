@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane prefHeight="750.0" prefWidth="1200.0"
+            style="-fx-background-color: #1a0a0a;"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="UI.MainController">
+
+    <!-- Header -->
+    <top>
+        <Label text="Sorting Algorithms"
+               maxWidth="Infinity"
+               prefHeight="50.0"
+               alignment="CENTER"
+               style="-fx-font-size: 22px;
+                      -fx-font-weight: bold;
+                      -fx-background-color: #2d0f0f;
+                      -fx-text-fill: #e74c3c;
+                      -fx-padding: 10px;
+                      -fx-border-color: #8b0000;
+                      -fx-border-width: 0 0 2 0;"/>
+    </top>
+
+    <!-- Tab Pane -->
+    <center>
+        <TabPane fx:id="mainTabPane"
+                 prefWidth="1200.0"
+                 prefHeight="700.0"
+                 tabClosingPolicy="UNAVAILABLE"
+                 style="-fx-background-color: #1a0a0a;
+                        -fx-tab-min-height: 35px;
+                        -fx-tab-max-height: 35px;">
+            <tabs>
+                <Tab text="  📊 Comparison Mode  "
+                     fx:id="comparisonTab"
+                     closable="false"/>
+                <Tab text="  🎬 Visualization  "
+                     fx:id="visualizationTab"
+                     closable="false"/>
+            </tabs>
+        </TabPane>
+    </center>
+
+</BorderPane>

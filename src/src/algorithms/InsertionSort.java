@@ -19,4 +19,7 @@ public class InsertionSort extends SortAlgorithm {
     public String getAlgorithmName() {
         return "Insertion Sort";
     }
+
+    @Override
+    public SortAlgorithm newInstance() { return new InsertionSort(); }
 }

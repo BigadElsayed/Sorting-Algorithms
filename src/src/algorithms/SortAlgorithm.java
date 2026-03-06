@@ -18,6 +18,7 @@ public abstract class SortAlgorithm {
 
     abstract protected void doSort(int[] array);
     abstract public String getAlgorithmName();
+    public abstract SortAlgorithm newInstance();
 
     public void resetCounters(){
         comparisons = 0;

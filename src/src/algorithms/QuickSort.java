@@ -47,4 +47,7 @@ public class QuickSort extends SortAlgorithm {
     public String getAlgorithmName() {
         return "Quick Sort";
     }
+
+    @Override
+    public SortAlgorithm newInstance() { return new QuickSort(); }
 }
