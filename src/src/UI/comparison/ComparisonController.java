@@ -25,6 +25,8 @@ import java.util.ResourceBundle;
 
 public class ComparisonController implements Initializable {
     @FXML
+    private Button clearFileButton;
+    @FXML
     private CheckBox bubbleCheck;
     @FXML
     private CheckBox selectionCheck;
@@ -297,5 +299,12 @@ public class ComparisonController implements Initializable {
             }
 
         }
+    }
+
+    @FXML
+    private void handleClearFile() {
+        loadedFilePaths.clear();
+        arrayTypeCombo.setDisable(false);
+        arraySizeField.setDisable(false);
     }
 }
